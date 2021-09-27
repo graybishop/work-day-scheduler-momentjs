@@ -5,18 +5,16 @@ const updateDateOnTop = () => {
 };
 
 //<div class="container">Timeblocks go here </div> need to add code to generate timeblocks
-
 // each time block contains: .hour div with hour am/pm, then text area with class(.past, .present, or .future), then .saveBtn
-
-const generateTimeBlock = (hourLabel, task) => {
+const generateTimeBlock = (hourLabel, task, state) => {
     let timeBlockEl = $('<div>')
     timeBlockEl.addClass('row')
     timeBlockEl.addClass('time-block')
     
     let hourEl = $(`<div class='hour'>${hourLabel}</div>`)
 
-    let textAreaEl = $(`<textarea class='${getCurrentState(hourLabel)} description'>${task}</textarea>`)
-    textAreaEl.css('flex','1 1')
+    let textAreaEl = $(`<textarea class='${state} description'>${task}</textarea>`)
+    // textAreaEl.css('flex','1 1')
 
     let saveBtn = $(`<div class='saveBtn'>SaveIcon</div>`)
     
@@ -25,16 +23,15 @@ const generateTimeBlock = (hourLabel, task) => {
     $(timeBlockEl).append(textAreaEl)
     $(timeBlockEl).append(saveBtn)
     
-    
 }
 
-//use momentJS to check how to compare time. 
+//use momentJS to  compare time. 
 const getCurrentState = (testTime) => {
     let now = moment()
-    testTime = moment(testTime, `h`)
+    //add plus one because we are testing the range of an hour. 
+    testTime = moment(testTime +1 , `h`)
     //gives minutes until we reach the test time.
     let differenceMinutes = testTime.diff(now, `minutes`)
-    console.log(differenceMinutes)
 
     if (differenceMinutes < 0) {
         return `past`
@@ -45,9 +42,20 @@ const getCurrentState = (testTime) => {
     }
 }
 
+const generateTable = () => {
+
+    for (let index = 9; index < 24; index++) {
+
+        //https://momentjs.com/docs/#/displaying/ for the display time
+        generateTimeBlock(moment(index, 'h').format('hA'), `test`,getCurrentState(index))
+        
+    }
+}
+
 const init = () => {
     updateDateOnTop();
-    generateTimeBlock(`17`, `Do the dishes`, `present`)
+    // generateTimeBlock(`17`, `Do the dishes`, `present`)
+    generateTable()
 };
 
 init();
