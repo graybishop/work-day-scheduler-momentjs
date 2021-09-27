@@ -20,7 +20,7 @@ const generateTimeBlock = (index, hourLabel, task, state) => {
     //text area in the middle of the row
     let textAreaEl = $(`<textarea class='${state} description'>${task}</textarea>`);
     //save button at the end of the row
-    let saveBtn = $(`<div class='saveBtn'><i>SaveIcon</i></div>`);
+    let saveBtn = $(`<div class='saveBtn'><i class ='far fa-save'></i></div>`);
     //ties click event to each button
     saveBtn.on('click', storeData);
 
