@@ -6,17 +6,20 @@ const updateDateOnTop = () => {
 
 //<div class="container">Timeblocks go here </div> need to add code to generate timeblocks
 // each time block contains: .hour div with hour am/pm, then text area with class(.past, .present, or .future), then .saveBtn
-const generateTimeBlock = (hourLabel, task, state) => {
+const generateTimeBlock = (index, hourLabel, task, state) => {
     let timeBlockEl = $('<div>')
     timeBlockEl.addClass('row')
     timeBlockEl.addClass('time-block')
+    timeBlockEl.data('index', index)
     
     let hourEl = $(`<div class='hour'>${hourLabel}</div>`)
 
     let textAreaEl = $(`<textarea class='${state} description'>${task}</textarea>`)
     // textAreaEl.css('flex','1 1')
 
-    let saveBtn = $(`<div class='saveBtn'>SaveIcon</div>`)
+    let saveBtn = $(`<div class='saveBtn'><i>SaveIcon</i></div>`)
+    
+    saveBtn.on('click', storeData)
     
     $('.container').append(timeBlockEl)
     $(timeBlockEl).append(hourEl)
@@ -35,7 +38,7 @@ const getCurrentState = (testTime) => {
 
     if (differenceMinutes < 0) {
         return `past`
-    } else if (differenceMinutes < 60 && differenceMinutes > 0 ){
+    } else if (differenceMinutes < 60 && differenceMinutes >= 0 ){
         return `present`
     } else {
         return `future`
@@ -44,12 +47,21 @@ const getCurrentState = (testTime) => {
 
 const generateTable = () => {
 
-    for (let index = 9; index < 24; index++) {
+    for (let index = 9; index < 20; index++) {
 
         //https://momentjs.com/docs/#/displaying/ for the display time
-        generateTimeBlock(moment(index, 'h').format('hA'), `test`,getCurrentState(index))
+        generateTimeBlock(index, moment(index, 'h').format('hA'), `test ${Math.floor(Math.random() * index)}`,getCurrentState(index))
         
     }
+}
+
+const storeData = (event) => {
+    let indexOfRow = $(event.currentTarget).parent().data('index')
+    let textAreaValue = $(event.currentTarget).siblings().eq(1).val()
+    // console.log($(event.currentTarget).siblings().eq(0).text())
+    // console.log($(event.currentTarget).parent().data('index'))
+    
+    localStorage.setItem(indexOfRow, textAreaValue)
 }
 
 const init = () => {
@@ -59,6 +71,4 @@ const init = () => {
 };
 
 init();
-
-
 
