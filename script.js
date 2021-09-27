@@ -9,7 +9,6 @@ const updateDateOnTop = () => {
 // each time block contains: .hour div with hour am/pm, then text area with class(.past, .present, or .future), then .saveBtn
 
 const generateTimeBlock = (hourLabel, task) => {
-    console.log(`i've been called`)
     let timeBlockEl = $('<div>')
     timeBlockEl.addClass('row')
     timeBlockEl.addClass('time-block')
@@ -20,7 +19,6 @@ const generateTimeBlock = (hourLabel, task) => {
     textAreaEl.css('flex','1 1')
 
     let saveBtn = $(`<div class='saveBtn'>SaveIcon</div>`)
-    console.log(hourEl)
     
     $('.container').append(timeBlockEl)
     $(timeBlockEl).append(hourEl)
@@ -32,9 +30,15 @@ const generateTimeBlock = (hourLabel, task) => {
 
 //use momentJS to check how to compare time. 
 const getCurrentState = (testTime) => {
-    if (false) {
+    let now = moment()
+    testTime = moment(testTime, `h`)
+    //gives minutes until we reach the test time.
+    let differenceMinutes = testTime.diff(now, `minutes`)
+    console.log(differenceMinutes)
+
+    if (differenceMinutes < 0) {
         return `past`
-    } else if (false){
+    } else if (differenceMinutes < 60 && differenceMinutes > 0 ){
         return `present`
     } else {
         return `future`
@@ -43,7 +47,7 @@ const getCurrentState = (testTime) => {
 
 const init = () => {
     updateDateOnTop();
-    generateTimeBlock(`1PM`, `Do the dishes`, `present`)
+    generateTimeBlock(`17`, `Do the dishes`, `present`)
 };
 
 init();
