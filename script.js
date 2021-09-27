@@ -4,10 +4,10 @@ const valuesMap = new Map();
 // need to add date and weekday<p>id="currentDay" class="lead"
 const updateDateOnTop = () => {
     let currentDayEl = $('#currentDay');
-    currentDayEl.text(moment().format('dddd, MMMM Do YYYY'));
+    currentDayEl.text(moment().format('dddd, MMMM Do'));
 };
 
-//<div class="container">Timeblocks go here </div> need to add code to generate timeblocks
+//code to generate time blocks
 // each time block contains: .hour div with hour am/pm, then text area with class(.past, .present, or .future), then .saveBtn
 const generateTimeBlock = (index, hourLabel, task, state) => {
     let timeBlockEl = $('<div>');
