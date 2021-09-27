@@ -1,3 +1,5 @@
+const valuesMap = new Map()
+
 // need to add date and weekday<p>id="currentDay" class="lead"
 const updateDateOnTop = () => {
     let currentDayEl = $('#currentDay');
@@ -48,23 +50,47 @@ const getCurrentState = (testTime) => {
 const generateTable = () => {
 
     for (let index = 9; index < 20; index++) {
+        let textValue =``
 
+        if (valuesMap.get(index)) {
+            textValue = valuesMap.get(index)
+        }
+
+        console.log(textValue)
         //https://momentjs.com/docs/#/displaying/ for the display time
-        generateTimeBlock(index, moment(index, 'h').format('hA'), `test ${Math.floor(Math.random() * index)}`,getCurrentState(index))
+        generateTimeBlock(index, moment(index, 'h').format('hA'), textValue ,getCurrentState(index))
         
     }
 }
 
 const storeData = (event) => {
-    let indexOfRow = $(event.currentTarget).parent().data('index')
-    let textAreaValue = $(event.currentTarget).siblings().eq(1).val()
-    // console.log($(event.currentTarget).siblings().eq(0).text())
-    // console.log($(event.currentTarget).parent().data('index'))
+    //for the button clicked
+    //grabs index of the row
+    let indexOfRow = Number($(event.currentTarget).parent().data('index'))
+    //grabs text inside of the text box.
+    let textAreaValue = $(event.currentTarget).siblings().eq(1).val().trim()
     
-    localStorage.setItem(indexOfRow, textAreaValue)
+    //checks for empty string
+    if (textAreaValue != '') {
+        valuesMap.set(indexOfRow, textAreaValue)
+        localStorage.setItem(indexOfRow, textAreaValue)
+    }
+
+}
+
+const readData = () => {
+    for (let index = 9; index < 20; index++) {
+        const storageValue = localStorage.getItem(index)
+        if (storageValue){
+            console.log(storageValue)
+            valuesMap.set(index, storageValue)
+        }
+    }
+    console.log(valuesMap)
 }
 
 const init = () => {
+    readData()
     updateDateOnTop();
     // generateTimeBlock(`17`, `Do the dishes`, `present`)
     generateTable()
